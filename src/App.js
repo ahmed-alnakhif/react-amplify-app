@@ -20,14 +20,6 @@ function App({ SignOut }) {
     fetchNotes();
   }, []);
 
-  async function onChange(e) {
-    if (!e.target.files[0]) return;
-    const file = e.target.files[0];
-    setFormData({ ...formData, image: file.name });
-    await Storage.put(file.name, file);
-    fetchNotes();
-  }
-
   async function fetchNotes() {
     const apiData = await API.graphql({ query: listNotes });
     const notesFromAPI = apiData.data.listNotes.items;
@@ -69,6 +61,14 @@ function App({ SignOut }) {
     });
   }
 
+  async function handleFileChange(e) {
+    if (!e.target.files[0]) return;
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file.name });
+    await Storage.put(file.name, file);
+    fetchNotes();
+  }
+
   return (
     <div className="App">
       <h1>My Notes App</h1>
@@ -84,7 +84,7 @@ function App({ SignOut }) {
         placeholder="Note description"
         value={formData.description}
       />
-      <input type="file" onChange={onChange} />
+      <input type="file" onChange={handleFileChange} />
       <button onClick={createNote}>Create Note</button>
       <div style={{ marginBottom: 30 }}>
         {notes.map((note) => (
