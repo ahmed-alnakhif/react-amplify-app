@@ -29,6 +29,7 @@ export const listTodos = /* GraphQL */ `
         updatedAt
       }
       nextToken
+      items
     }
   }
 `;
